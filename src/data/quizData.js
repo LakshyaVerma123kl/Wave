@@ -1,4 +1,3 @@
-// src/data/quizData.js
 export const quizQuestions = [
   {
     question: "What determines the loudness of a sound wave?",

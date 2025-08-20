@@ -1,4 +1,3 @@
-// src/data/sections.js
 export const sections = [
   { id: "intro", title: "What are Waves?", icon: "🌊" },
   { id: "properties", title: "Wave Properties", icon: "📏" },

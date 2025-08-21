@@ -171,7 +171,22 @@ const QuizSection = ({ onComplete }) => {
     resetQuiz,
   } = useQuiz();
 
-  const [completedQuestions, setCompletedQuestions] = useState(new Set());
+  // Helper functions defined before they're used
+  const getCompletedCount = () => {
+    return Object.keys(feedback).filter((key) => feedback[key]?.show).length;
+  };
+
+  const getCorrectCount = () => {
+    return Object.keys(feedback).filter((key) => feedback[key]?.correct).length;
+  };
+
+  const isComplete = getCompletedCount() === quizQuestions.length;
+
+  // Calculate completion percentage for internal progress
+  const completionPercentage = Math.min(
+    (getCompletedCount() / quizQuestions.length) * 100,
+    100
+  );
 
   useEffect(() => {
     const answered = Object.keys(feedback).filter(
@@ -181,20 +196,6 @@ const QuizSection = ({ onComplete }) => {
       setTimeout(() => onComplete?.(), 2000);
     }
   }, [feedback, onComplete, isComplete]);
-
-  // Calculate completion percentage for internal progress
-  const completionPercentage = Math.min(
-    (getCompletedCount() / quizQuestions.length) * 100,
-    100
-  );
-
-  const getCompletedCount = () => {
-    return Object.keys(feedback).filter((key) => feedback[key]?.show).length;
-  };
-
-  const getCorrectCount = () => {
-    return Object.keys(feedback).filter((key) => feedback[key]?.correct).length;
-  };
 
   const getScoreByDifficulty = () => {
     const basic = quizQuestions.filter((q) => q.difficulty === "basic");
@@ -213,7 +214,6 @@ const QuizSection = ({ onComplete }) => {
     };
   };
 
-  const isComplete = getCompletedCount() === quizQuestions.length;
   const scorePercentage = isComplete
     ? Math.round((getCorrectCount() / quizQuestions.length) * 100)
     : 0;
